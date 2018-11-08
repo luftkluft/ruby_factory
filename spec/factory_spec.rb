@@ -10,10 +10,8 @@ RSpec.describe 'Factory' do
   end
 
   it 'creates factory in a namespace' do
-    Factory.new('Customer', :name, :address)
-
-    customer = Factory::Customer.new('Dave', '123 Main')
-
+    Customer = Factory.new(:name, :address)
+    customer = Customer.new('Dave', '123 Main')
     expect(customer.name).to eq('Dave')
     expect(customer.address).to eq('123 Main')
   end
