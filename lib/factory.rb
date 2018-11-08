@@ -9,6 +9,7 @@ class Factory
       class_eval(&block) if block_given?
 
       define_method :initialize do |*keys_data|
+        raise ArgumentError, 'Wrong number of arguments (the number of arguments does not match)' if keys.count != keys_data.count
         keys.zip(keys_data).each do |arg, value|
           unless arg.is_a? Symbol
             raise NameError, "identifier #{arg} must be constant"
