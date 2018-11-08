@@ -2,7 +2,7 @@
 
 Factory class is a simplified Struct class implementation.
 
-Enter 'ruby lib/index.rb' to run.
+Enter 'ruby lib/main.rb' to run.
 
 # Default example:
 
