@@ -16,6 +16,15 @@ class Factory
 
           send("#{arg}=", value)
         end
+
+        def [](arg)
+          if (arg.is_a? String) || (arg.is_a? Symbol)
+            instance_variable_get("@#{arg}")
+          elsif arg.is_a? Integer
+            instance_variable_get(instance_variables[arg])
+          end
+        end
+      end
     end
   end
 end
