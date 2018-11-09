@@ -18,11 +18,13 @@ class Factory
         end
 
         def [](arg)
-          arg.is_a?(Integer) ? instance_variable_get(instance_variables[arg]) : instance_variable_get("@#{arg}")
+          return instance_variable_get(instance_variables[arg]) if arg.is_a?(Integer)
+          return instance_variable_get("@#{arg}")
         end
 
         def []=(arg, value)
-          arg.is_a?(Integer) ? instance_variable_set(instance_variables[arg], value) : instance_variable_set(:"@#{arg}", value)
+          return instance_variable_set(instance_variables[arg], value) if arg.is_a?(Integer)
+          return instance_variable_set(:"@#{arg}", value)
         end
       end
     end
