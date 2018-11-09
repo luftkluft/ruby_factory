@@ -14,12 +14,15 @@ class Factory
           unless arg.is_a? Symbol
             raise NameError, "identifier #{arg} must be constant"
           end
-
           send("#{arg}=", value)
         end
 
         def [](arg)
           arg.is_a?(Integer) ? instance_variable_get(instance_variables[arg]) : instance_variable_get("@#{arg}")
+        end
+
+        def []=(arg, value)
+          arg.is_a?(Integer) ? instance_variable_set(instance_variables[arg], value) : instance_variable_set(:"@#{arg}", value)
         end
       end
     end
