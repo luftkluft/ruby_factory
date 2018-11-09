@@ -1,10 +1,5 @@
-Metrics/LineLength:
-  Max: 80
-  Exclude:
-    - !ruby/regexp /_spec\.rb$/
-
-Metrics/BlockLength:
-  Max: 100
-
 Style/Documentation:
   Enabled: false
+
+Metrics/LineLength:
+  Max: 100
