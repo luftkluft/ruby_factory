@@ -4,6 +4,15 @@ class Factory
   def self.new(*keys, &block)
     raise ArgumentError, 'Empty initialize' if keys.empty?
 
+    if keys[0].is_a? String
+      constant_name = keys.shift
+      const_set(constant_name.capitalize, get_class(*keys, &block))
+    else
+      self.get_class(*keys, &block)
+    end
+  end
+
+  def self.get_class(*keys, &block)
     Class.new do
       attr_accessor(*keys)
       class_eval(&block) if block_given?
