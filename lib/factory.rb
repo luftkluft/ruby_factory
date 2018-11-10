@@ -67,6 +67,14 @@ class Factory
                instance_variable_get(name)]
           end]
         end
+
+        def each(&value)
+          to_a.each(&value)
+        end
+
+        def to_a
+          instance_variables.map { |varieble| instance_variable_get(varieble) }
+        end
       end
     end
   end
