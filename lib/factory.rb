@@ -37,6 +37,25 @@ class Factory
 
           instance_variable_set(:"@#{arg}", value)
         end
+
+        def ==(other)
+          compare(other) { |_false, _self, _other| _false && (_self == _other)}
+        end
+
+        def compare(other)
+          return true if self.object_id == other.object_id
+          self.instance_variables.inject(true) do |_false, varieble|
+            return false unless _false
+            begin
+              _self = self.instance_variable_get(varieble)
+              _other = other.instance_variable_get(varieble)
+              yield(_false, _self, _other) if block_given?
+            rescue Exception => e
+              puts "Compare error: #{e.message}"
+              false
+            end
+          end
+        end
       end
     end
   end
