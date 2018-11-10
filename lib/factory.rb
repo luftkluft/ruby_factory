@@ -8,7 +8,7 @@ class Factory
       constant_name = keys.shift
       const_set(constant_name.capitalize, get_class(*keys, &block))
     else
-      self.get_class(*keys, &block)
+      get_class(*keys, &block)
     end
   end
 
