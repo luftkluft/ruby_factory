@@ -95,6 +95,13 @@ class Factory
         def select(&member_value)
           to_a.select(&member_value)
         end
+
+        def values_at(*indexes)
+          indexes.map do |index|
+            raise IndexError unless instance_variables[index]
+            to_a[index]
+          end
+        end
       end
     end
   end
