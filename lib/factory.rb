@@ -91,6 +91,10 @@ class Factory
         def members
           instance_variables.map { |member| member.to_s.delete('@').to_sym }
         end
+
+        def select(&member_value)
+          to_a.select(&member_value)
+        end
       end
     end
   end
