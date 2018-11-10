@@ -21,7 +21,7 @@ class Factory
         raise ArgumentError, 'Mismatch number of arguments' if keys.count != keys_data.count
 
         keys.zip(keys_data).each do |arg, value|
-          raise NameError, "identifier #{arg} must be constant" unless arg.is_a? Symbol
+          raise NameError, "identifier #{arg} must be constant" unless arg.is_a?(Symbol)
 
           send("#{arg}=", value)
         end
@@ -55,6 +55,17 @@ class Factory
               false
             end
           end
+        end
+
+        def dig(*args)
+          to_h.dig(*args)
+        end
+
+        def to_h
+          Hash[instance_variables.map do |name|
+              [name.to_s.delete('@').to_sym,
+               instance_variable_get(name)]
+          end]
         end
       end
     end
