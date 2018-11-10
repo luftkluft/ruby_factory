@@ -79,6 +79,14 @@ class Factory
         def each_pair(&name_value)
           to_h.each_pair(&name_value)
         end
+
+        def length
+          to_a.size
+        end
+
+        def size
+          to_a.size
+        end
       end
     end
   end
