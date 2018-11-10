@@ -89,7 +89,9 @@ RSpec.describe 'Factory' do
     joe = Customer.new('Joe Smith', '123 Maple, Anytown NC', 12_345)
     each_elements = []
     joe.each_pair { |name, value| each_elements << "#{name} => #{value}" }
-    expect(each_elements).to match_array(['name => Joe Smith', 'address => 123 Maple, Anytown NC', 'zip => 12345'])
+    expect(each_elements).to match_array(
+      ['name => Joe Smith', 'address => 123 Maple, Anytown NC', 'zip => 12345']
+    )
   end
 
   # test 10
@@ -118,7 +120,9 @@ RSpec.describe 'Factory' do
   # test 13
   it 'to_a works as expected' do
     Customer = Factory.new(:name, :address, :zip)
-    joe = Customer.new('Joe Smith', '123 Maple, Anytown NC', 12_345)
+    joe = Customer.new('Joe Smith',
+                       '123 Maple, Anytown NC',
+                       12_345)
     expect(joe.to_a[1]).to eq('123 Maple, Anytown NC')
   end
 

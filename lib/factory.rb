@@ -39,18 +39,20 @@ class Factory
         end
 
         def ==(other)
-          compare(other) { |_false, _self, _other| _false && (_self == _other)}
+          compare(other) { |ffalse, sself, oother| ffalse && (sself == oother) }
         end
 
         def compare(other)
-          return true if self.object_id == other.object_id
-          self.instance_variables.inject(true) do |_false, varieble|
-            return false unless _false
+          return true if object_id == other.object_id
+
+          instance_variables.inject(true) do |ffalse, varieble|
+            return false unless ffalse
+
             begin
-              _self = self.instance_variable_get(varieble)
-              _other = other.instance_variable_get(varieble)
-              yield(_false, _self, _other) if block_given?
-            rescue Exception => e
+              sself = instance_variable_get(varieble)
+              oother = other.instance_variable_get(varieble)
+              yield(ffalse, sself, oother) if block_given?
+            rescue StandardError => e
               puts "Compare error: #{e.message}"
               false
             end
@@ -63,8 +65,8 @@ class Factory
 
         def to_h
           Hash[instance_variables.map do |name|
-              [name.to_s.delete('@').to_sym,
-               instance_variable_get(name)]
+            [name.to_s.delete('@').to_sym,
+             instance_variable_get(name)]
           end]
         end
 
@@ -99,6 +101,7 @@ class Factory
         def values_at(*indexes)
           indexes.map do |index|
             raise IndexError unless instance_variables[index]
+
             to_a[index]
           end
         end
