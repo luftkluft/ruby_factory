@@ -87,6 +87,10 @@ class Factory
         def size
           to_a.size
         end
+
+        def members
+          instance_variables.map { |member| member.to_s.delete('@').to_sym }
+        end
       end
     end
   end
