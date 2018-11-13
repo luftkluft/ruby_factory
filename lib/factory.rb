@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require_relative 'methods'
+
 class Factory
   def self.new(*keys, &block)
     raise ArgumentError, 'Empty initialize' if keys.empty?
 
     if keys[0].is_a? String
-      constant_name = keys.shift
-      const_set(constant_name.capitalize, get_class(*keys, &block))
+      const_set(keys.shift.capitalize, get_class(*keys, &block))
     else
       get_class(*keys, &block)
     end
@@ -20,92 +21,9 @@ class Factory
       define_method :initialize do |*keys_data|
         raise ArgumentError, 'Mismatch number of arguments' if keys.count != keys_data.count
 
-        keys.zip(keys_data).each do |arg, value|
-          raise NameError, "identifier #{arg} must be constant" unless arg.is_a?(Symbol)
-
-          send("#{arg}=", value)
-        end
-
-        def [](arg)
-          return instance_variable_get(instance_variables[arg]) if arg.is_a?(Integer)
-
-          instance_variable_get("@#{arg}")
-        end
-
-        def []=(arg, value)
-          return instance_variable_set(instance_variables[arg], value) if arg.is_a?(Integer)
-
-          instance_variable_set(:"@#{arg}", value)
-        end
-
-        def ==(other)
-          compare(other) { |ffalse, sself, oother| ffalse && (sself == oother) }
-        end
-
-        def compare(other)
-          return true if object_id == other.object_id
-
-          instance_variables.inject(true) do |ffalse, varieble|
-            return false unless ffalse
-
-            begin
-              sself = instance_variable_get(varieble)
-              oother = other.instance_variable_get(varieble)
-              yield(ffalse, sself, oother) if block_given?
-            rescue StandardError => e
-              puts "Compare error: #{e.message}"
-              false
-            end
-          end
-        end
-
-        def dig(*args)
-          to_h.dig(*args)
-        end
-
-        def to_h
-          Hash[instance_variables.map do |name|
-            [name.to_s.delete('@').to_sym,
-             instance_variable_get(name)]
-          end]
-        end
-
-        def each(&value)
-          to_a.each(&value)
-        end
-
-        def to_a
-          instance_variables.map { |varieble| instance_variable_get(varieble) }
-        end
-
-        def each_pair(&name_value)
-          to_h.each_pair(&name_value)
-        end
-
-        def length
-          to_a.size
-        end
-
-        def size
-          to_a.size
-        end
-
-        def members
-          instance_variables.map { |member| member.to_s.delete('@').to_sym }
-        end
-
-        def select(&member_value)
-          to_a.select(&member_value)
-        end
-
-        def values_at(*indexes)
-          indexes.map do |index|
-            raise IndexError unless instance_variables[index]
-
-            to_a[index]
-          end
-        end
+        keys.zip(keys_data).each { |arg, value| send("#{arg}=", value) }
       end
+      include Methods
     end
   end
 end
