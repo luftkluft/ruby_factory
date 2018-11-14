@@ -81,7 +81,7 @@ class Factory
       alias_method :size, :length
 
       def members
-        instance_variables.map { |member| member.to_s.delete('@').to_sym }
+        instance_variables.map { |variable| variable.to_s.delete('@').to_sym }
       end
 
       def select(&member_value)
