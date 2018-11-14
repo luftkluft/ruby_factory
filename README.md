@@ -3,6 +3,7 @@
 Factory class is a simplified Struct class implementation.
 
 Enter 'ruby lib/main.rb' to run.
+Enter 'rspec .' to run rspec tests.
 
 # Default example:
 
