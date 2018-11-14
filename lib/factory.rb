@@ -90,7 +90,6 @@ class Factory
 
       def values_at(*indexes)
         indexes.map do |index|
-          raise IndexError unless instance_variables[index]
 
           to_a[index]
         end
