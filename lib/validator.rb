@@ -3,7 +3,7 @@
 module Validator
   include Errors
   def chech_for_symbol(*symbol)
-    symbol.each { |element| raise WrongSymbolError unless element.is_a?(Symbol)}
+    symbol.each { |element| raise WrongSymbolError unless element.is_a?(Symbol) }
   end
 
   def check_for_emptiness(string)
