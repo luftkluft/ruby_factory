@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'errors'
+require_relative 'validator'
+
 class Factory
   class << self
-  def new(*keys, &block)
-    raise ArgumentError, 'Empty initialize' if keys.empty?
+  include Validator
 
+  def new(*keys, &block)
+    check_for_emptiness(keys)
     if keys.first.is_a? String
       const_set(keys.shift.capitalize, build_class(*keys, &block))
     else
@@ -15,12 +19,13 @@ class Factory
   def build_class(*keys, &block)
     Class.new do
       attr_accessor(*keys)
-      class_eval(&block) if block_given?
 
-      define_method :initialize do |*keys_data|
-        raise ArgumentError, 'Mismatch number of arguments' if keys.count != keys_data.count
+      include Validator
+      define_method :initialize do |*keys_value|
+        chech_for_symbol(*keys)
+        raise ArgumentError, 'Mismatch number of arguments' if keys.count != keys_value.count
 
-        keys.zip(keys_data).each { |arg, value| send("#{arg}=", value) }
+        keys.zip(keys_value).each { |key, value| public_send("#{key}=", value) }
       end
 
       def [](arg)
@@ -79,8 +84,6 @@ class Factory
         to_a.size
       end
 
-      alias_method :size, :length
-
       def members
         instance_variables.map { |variable| variable.to_s.delete('@').to_sym }
       end
@@ -95,6 +98,9 @@ class Factory
           to_a[index]
         end
       end
+
+      alias_method :size, :length
+      class_eval(&block) if block_given?
     end
   end
 end
