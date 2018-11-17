@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Factory
-  def self.new(*keys, &block)
+  class << self
+  def new(*keys, &block)
     raise ArgumentError, 'Empty initialize' if keys.empty?
 
     if keys.first.is_a? String
@@ -11,7 +12,7 @@ class Factory
     end
   end
 
-  def self.build_class(*keys, &block)
+  def build_class(*keys, &block)
     Class.new do
       attr_accessor(*keys)
       class_eval(&block) if block_given?
@@ -81,7 +82,7 @@ class Factory
       alias_method :size, :length
 
       def members
-        instance_variables.map { |member| member.to_s.delete('@').to_sym }
+        instance_variables.map { |variable| variable.to_s.delete('@').to_sym }
       end
 
       def select(&member_value)
@@ -90,11 +91,11 @@ class Factory
 
       def values_at(*indexes)
         indexes.map do |index|
-          raise IndexError unless instance_variables[index]
 
           to_a[index]
         end
       end
     end
   end
+end
 end
