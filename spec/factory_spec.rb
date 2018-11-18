@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/factory'
+require_relative '../lib/autoload'
 
 RSpec.describe 'Factory' do
   before do

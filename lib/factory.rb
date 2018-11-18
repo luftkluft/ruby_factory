@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'errors'
-require_relative 'validator'
-
 class Factory
   class << self
     include Validator
@@ -23,8 +20,7 @@ class Factory
 
         define_method :initialize do |*keys_value|
           chech_for_symbol(*keys)
-          raise ArgumentError, 'Mismatch number of arguments' if keys.count != keys_value.count
-
+          check_for_match_argument_count(keys, keys_value)
           keys.zip(keys_value).each { |key, value| public_send("#{key}=", value) }
         end
 
