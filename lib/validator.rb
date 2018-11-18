@@ -2,6 +2,7 @@
 
 module Validator
   include Errors
+
   def check_for_match_argument_count(first, other)
     raise ArgumentError, 'Mismatch number of arguments' if first.count != other.count
   end
@@ -12,9 +13,5 @@ module Validator
 
   def check_for_emptiness(string)
     raise EmptyStringError if string.empty?
-  end
-
-  def check_class(entity, klass)
-    raise WrongClassError unless entity.is_a? klass
   end
 end
