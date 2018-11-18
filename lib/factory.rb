@@ -45,8 +45,12 @@ class Factory
           end
         end
 
-        def dig(*args)
-          to_h.dig(*args)
+        def dig(*path)
+          path.inject(self) do |key, value|
+            return nil if key[value].nil?
+
+            key[value]
+          end
         end
 
         def to_h
