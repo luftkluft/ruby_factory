@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'errors'
+require_relative 'validator'
+
 class Factory
   class << self
     include Validator
